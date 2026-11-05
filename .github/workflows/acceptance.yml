@@ -1,0 +1,45 @@
+name: NearPortal acceptance
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance-one:
+    name: acceptance-one
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify bounty one
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('solutions/one.txt')
+          assert path.is_file() and not path.is_symlink(), 'Add solutions/one.txt'
+          assert path.read_bytes() == b'NearPortal rehearsal one\n', 'Incorrect bounty-one content'
+          PY
+
+  acceptance-two:
+    name: acceptance-two
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify bounty two
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('solutions/two.txt')
+          assert path.is_file() and not path.is_symlink(), 'Add solutions/two.txt'
+          assert path.read_bytes() == b'NearPortal rehearsal two\n', 'Incorrect bounty-two content'
+          PY
